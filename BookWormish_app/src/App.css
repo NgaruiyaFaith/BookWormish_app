@@ -1,10 +1,16 @@
+html, body {
+  height: 100%;  /* This ensures that the html and body elements take full height */
+  margin: 0;     /* Removes default margin */
+}
+
 #root {
+  position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh;  /* Ensures that #root takes at least the height of the viewport */
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0 auto;     /* Center the #root element horizontally */
+  padding: 0 2rem;    /* Horizontal padding */
   text-align: center;
 }
 

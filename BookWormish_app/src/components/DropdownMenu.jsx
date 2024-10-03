@@ -46,4 +46,3 @@ const DropdownMenu = ({ closeDropdown }) => {
 };
 
 export default DropdownMenu;
-

@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: 'class', // Ensure dark mode is enabled
   theme: {
     extend: {
       fontFamily: {

@@ -69,4 +69,3 @@ const BookList = ({ books }) => {
 };
 
 export default BookList;
-

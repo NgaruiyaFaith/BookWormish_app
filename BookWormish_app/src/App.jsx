@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Title from './components/Title';
 import SearchBar from './components/SearchBar';
@@ -16,15 +16,12 @@ function App() {
   const [displayBooks, setDisplayBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedBook, setSelectedBook] = useState(null); // State for selected book
   const totalBooksToFetch = 30;
   const booksPerPage = 10;
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
-    // Apply the new background color to the body element and handle dark mode
-    document.body.style.backgroundColor = darkMode ? '#2d3748' : '#f0f4f8'; // New background color for light mode
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
@@ -49,10 +46,6 @@ function App() {
 
   const handleSearch = (query) => debouncedSearch(query);
 
-  const handleBookSelect = (book) => {
-    setSelectedBook(book); // Set the selected book when a book is clicked
-  };
-
   useEffect(() => {
     const start = (currentPage - 1) * booksPerPage;
     const end = start + booksPerPage;
@@ -73,23 +66,29 @@ function App() {
                   <>
                     <Title />
                     <SearchBar onSearch={handleSearch} />
-                    {loading ? <p>Loading...</p> : <BookList books={displayBooks} onBookSelect={handleBookSelect} />}
-                    <Pagination currentPage={currentPage} totalPages={Math.ceil(books.length / booksPerPage)} onPageChange={setCurrentPage} />
-                  </>
-                }
-              />
-              {/* Book Details Route */}
-              <Route path="/book/:id" element={<BookDetails book={selectedBook} />} />
-            </Routes>
-          </main>
-        </div>
-        <Footer />
-      </div>
-    </Router>
-  );
-}
+                    {loading ? <p>Loading...</p> : <BookList books={displayBooks} />}
+                    <Pagination 
+                                      currentPage={currentPage}
+                                        totalPages={Math.ceil(books.length / booksPerPage)}
+                                        onPageChange={setCurrentPage}
+                                      />
+                                    </>
+                                  }
+                                />
+                                {/* Book Details Route */}
+                                <Route path="/book/:id" element={<BookDetails />} />
+                              </Routes>
+                            </main>
+                          </div>
+                          <Footer />
+                        </div>
+                      </Router>
+                    );
+                  }
+                  
+                  export default App;
+                  
 
-export default App;
 
 
 

@@ -1,14 +1,19 @@
+// src/components/BookDetails.jsx
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-const BookDetails = ({ book }) => {
-  if (!book) return <div>No book selected</div>;
+const BookDetails = () => {
+  const location = useLocation();
+  const book = location.state?.book; // Retrieve book data from location state
+
+  if (!book) return <div className="p-4 text-center">No book selected</div>;
 
   // Simplify display information
   const displayCategories = book.subjects?.slice(0, 2).join(', ') || 'No categories available';
   const displayPublishers = book.publisher?.slice(0, 2).join(', ') || 'No publisher available';
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg">
+    <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto mt-8">
       <div className="flex flex-col md:flex-row">
         <img
           src={book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : 'https://via.placeholder.com/150'}
@@ -49,6 +54,7 @@ const BookDetails = ({ book }) => {
 };
 
 export default BookDetails;
+
 
 
 

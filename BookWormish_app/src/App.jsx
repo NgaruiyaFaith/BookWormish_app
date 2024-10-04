@@ -23,6 +23,8 @@ function App() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
+    // Apply the new background color to the body element and handle dark mode
+    document.body.style.backgroundColor = darkMode ? '#2d3748' : '#f0f4f8'; // New background color for light mode
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
@@ -88,6 +90,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
 
 
 

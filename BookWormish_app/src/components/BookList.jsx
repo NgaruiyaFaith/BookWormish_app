@@ -2,24 +2,22 @@
 import React, { useState } from 'react';
 import BookCard from './BookCard';
 
-const BookList = ({ books }) => {
+const BookList = ({ books, onBookSelect }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 10;
 
-  // Calculate total pages
   const totalPages = Math.ceil(books.length / booksPerPage);
 
-  // Get current books
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(prev => prev - 1);
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
 
   if (!books.length) {
@@ -30,11 +28,9 @@ const BookList = ({ books }) => {
     <div>
       <div className="space-y-4">
         {currentBooks.map((book, index) => (
-          <BookCard key={index} book={book} />
+          <BookCard key={index} book={book} onBookSelect={onBookSelect} />
         ))}
       </div>
-
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-6 space-x-4">
           <button
@@ -69,3 +65,5 @@ const BookList = ({ books }) => {
 };
 
 export default BookList;
+
+

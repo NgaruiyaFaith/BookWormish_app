@@ -1,23 +1,26 @@
+// src/components/BookCard.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, onBookSelect }) => {
   const coverUrl = book.cover_i
     ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
     : 'https://via.placeholder.com/100x150?text=No+Cover';
 
-  // Function to extract the first item from any list
-  const getFirstItem = (items) => {
-    return items && items.length > 0 ? items[0] : 'N/A';
+  const handleClick = () => {
+    if (onBookSelect) {
+      onBookSelect(book); // Set the selected book in App state
+    }
   };
 
   return (
-    <div className="flex items-center bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300">
-      <img
-        src={coverUrl}
-        alt={book.title}
-        className="w-24 h-36 object-cover rounded-md mr-4"
-      />
-      <div className="flex flex-1 justify-between">
+    <Link to={`/book/${book.key}`} onClick={handleClick}>
+      <div className="flex items-start bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300">
+        <img
+          src={coverUrl}
+          alt={book.title}
+          className="w-24 h-36 object-cover rounded-md mr-4"
+        />
         <div>
           <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
             {book.title}
@@ -25,24 +28,17 @@ const BookCard = ({ book }) => {
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {book.author_name ? book.author_name.join(', ') : 'Unknown Author'}
           </p>
-        </div>
-        <div className="text-right">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Year: {book.publish_year ? book.publish_year[0] : 'Unknown'}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Category: {getFirstItem(book.subject)}
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Format: {getFirstItem(book.format)}
+            {book.publisher ? book.publisher[0] : 'Unknown Publisher'}
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
 export default BookCard;
+
 
 
 

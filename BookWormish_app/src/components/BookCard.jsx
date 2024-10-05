@@ -1,18 +1,22 @@
-// src/components/BookCard.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BookCard = ({ book, onBookSelect }) => {
   const coverUrl = book.cover_i
     ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
     : 'https://via.placeholder.com/100x150?text=No+Cover';
 
-  const bookId = book.key?.split('/').pop(); // Get the unique book ID
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Navigate to BookDetails and pass the book info using state
+    navigate(`/book/${book.key.split('/')[2]}`, { state: { book } });
+  };
 
   return (
     <div
       className="flex items-start bg-white dark:bg-gray-700 rounded-lg shadow-md p-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer"
-      onClick={() => onBookSelect(book)}
+      onClick={handleClick}
     >
       <img
         src={coverUrl}
@@ -21,7 +25,12 @@ const BookCard = ({ book, onBookSelect }) => {
       />
       <div>
         <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
-          <Link to={`/book/${bookId}`} className="hover:underline">
+          {/* Use Link to navigate and pass book data */}
+          <Link
+            to={`/book/${book.key.split('/')[2]}`}
+            state={{ book }}
+            className="hover:underline"
+          >
             {book.title}
           </Link>
         </h2>
@@ -37,6 +46,7 @@ const BookCard = ({ book, onBookSelect }) => {
 };
 
 export default BookCard;
+
 
 
 

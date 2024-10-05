@@ -1,13 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-const BookDetails = ({ book }) => {
+const BookDetails = () => {
+  const location = useLocation();
+  const book = location.state?.book; // Retrieve book data from location state
+
   if (!book) return <div>No book selected</div>;
 
-  // Simplify display information and limit to prevent overflow
+  // Simplify display information
   const displayCategories = book.subjects?.slice(0, 2).join(', ') || 'No categories available';
-  const displayPublishers = book.publisher?.slice(0, 1).join(', ') || 'No publisher available';
-  const displayISBN = book.isbn?.slice(0, 1).join(', ') || 'No ISBN available';
-  const displayLanguage = book.language?.slice(0, 1).join(', ') || 'Unknown';
+  const displayPublishers = book.publisher?.slice(0, 2).join(', ') || 'No publisher available';
 
   return (
     <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto mt-12">
@@ -34,14 +36,6 @@ const BookDetails = ({ book }) => {
             <h2 className="text-3xl font-bold mb-2">{book.title}</h2>
             <p className="text-xl text-blue-500 hover:underline cursor-pointer">{book.author_name?.join(', ') || 'Unknown Author'}</p>
 
-            {/* Rating */}
-            <div className="flex items-center mt-2">
-              <span className="text-yellow-500">⭐</span>
-              <span className="ml-1 text-gray-700 dark:text-gray-300">5.0 / 5.0</span>
-              <span className="ml-4 text-gray-500 dark:text-gray-400">0 comments</span>
-              <span className="ml-4 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-red-500">❤️</span>
-            </div>
-
             {/* Book Information */}
             <div className="grid grid-cols-2 gap-x-6 gap-y-2 mt-4 text-sm text-gray-600 dark:text-gray-400">
               <p>
@@ -51,31 +45,17 @@ const BookDetails = ({ book }) => {
                 <strong>Year:</strong> {book.first_publish_year || 'No data available'}
               </p>
               <p>
-                <strong>Language:</strong> {displayLanguage}
+                <strong>Language:</strong> {book.language?.join(', ') || 'Unknown'}
               </p>
               <p>
-                <strong>ISBN 10:</strong> {displayISBN}
-              </p>
-              <p>
-                <strong>Pages:</strong> {book.number_of_pages_median || 'No data'}
-              </p>
-              <p>
-                <strong>Publisher:</strong> {displayPublishers}
-              </p>
-              <p>
-                <strong>ISBN 13:</strong> {book.isbn?.join(', ') || 'No ISBN available'}
+                <strong>ISBN:</strong> {book.isbn?.join(', ') || 'No ISBN available'}
               </p>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-6">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg shadow transition">
-              🔒 Premium Needed
-            </button>
-            <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg shadow transition">
-              💾 Download
-            </button>
+            {/* Additional Information */}
+            <p className="mt-4 text-gray-700 dark:text-gray-300">
+              <strong>Description:</strong> {book.description || 'No description available.'}
+            </p>
           </div>
         </div>
       </div>
@@ -84,6 +64,7 @@ const BookDetails = ({ book }) => {
 };
 
 export default BookDetails;
+
 
 
 

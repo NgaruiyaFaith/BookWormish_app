@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        playfair: ['"Playfair Display"', 'serif'],
+        cursive: ['Great vibes', 'cursive'],
       },
       keyframes: {
         swing: {

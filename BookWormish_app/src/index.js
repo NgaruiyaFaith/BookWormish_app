@@ -3,10 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'; // Tailwind CSS
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
+  </BrowserRouter>
 );

@@ -15,7 +15,7 @@ const BookDetails = () => {
   const displayDescription = typeof book.description === 'object' ? book.description?.value : book.description || 'No description available.';
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg max-w-6xl mx-auto mt-12">
+    <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white p-6 rounded-lg shadow-lg max-w-5xl mx-auto mt-12">
       {/* Navigation Path */}
       <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         <Link to="/" className="text-blue-500 hover:underline">Main</Link> {' | '}
@@ -23,51 +23,49 @@ const BookDetails = () => {
       </div>
 
       {/* Main Content Layout */}
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-8">
         {/* Book Cover Image */}
         <div className="flex-shrink-0">
           <img
-            src={book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : 'https://via.placeholder.com/150'}
+            src={book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` : 'https://via.placeholder.com/300x450?text=No+Cover'}
             alt={book.title}
-            className="w-60 h-auto object-cover rounded-lg shadow-md"
+            className="w-40 md:w-56 h-auto object-cover rounded-lg shadow-md"
           />
         </div>
 
         {/* Book Information */}
-        <div className="flex flex-col justify-between flex-grow">
-          <div>
-            {/* Title and Author */}
-            <h2 className="text-4xl font-extrabold mb-4 text-gray-800 dark:text-gray-100">
-              {book.title}
-            </h2>
-            <p className="text-xl text-blue-500 mb-6 hover:underline cursor-pointer">{book.author_name?.join(', ') || 'Unknown Author'}</p>
+        <div className="flex flex-col justify-between flex-grow p-4 bg-white dark:bg-gray-800 rounded-md shadow-md">
+          {/* Title and Author */}
+          <h2 className="text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">
+            {book.title}
+          </h2>
+          <p className="text-lg text-blue-500 mb-4 hover:underline cursor-pointer">{book.author_name?.join(', ') || 'Unknown Author'}</p>
 
-            {/* Book Information */}
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-lg text-gray-700 dark:text-gray-300 mb-8">
-              <p>
-                <strong>Categories:</strong> {displayCategory}
-              </p>
-              <p>
-                <strong>Year:</strong> {book.first_publish_year || 'No data available'}
-              </p>
-              <p>
-                <strong>Language:</strong> {displayLanguage}
-              </p>
-              <p>
-                <strong>Publisher:</strong> {displayPublisher}
-              </p>
-              <p>
-                <strong>ISBN:</strong> {displayISBN}
-              </p>
-              <p>
-                <strong>Pages:</strong> {book.number_of_pages_median || 'No data'}
-              </p>
-            </div>
-
-            {/* Description */}
-            <p className="text-lg leading-relaxed mt-6 text-gray-600 dark:text-gray-300">
-              <strong>Description:</strong> {displayDescription}
+          {/* Book Information */}
+          <div className="grid grid-cols-1 gap-2 text-sm text-gray-700 dark:text-gray-300 mb-4">
+            <p>
+              <strong>Categories:</strong> {displayCategory}
             </p>
+            <p>
+              <strong>Year:</strong> {book.first_publish_year || 'No data available'}
+            </p>
+            <p>
+              <strong>Language:</strong> {displayLanguage}
+            </p>
+            <p>
+              <strong>Publisher:</strong> {displayPublisher}
+            </p>
+            <p>
+              <strong>ISBN:</strong> {displayISBN}
+            </p>
+            <p>
+              <strong>Pages:</strong> {book.number_of_pages_median || 'No data'}
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="text-sm leading-relaxed mt-6 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 p-4 rounded-md">
+            <strong>Description:</strong> {displayDescription}
           </div>
         </div>
       </div>
@@ -76,6 +74,7 @@ const BookDetails = () => {
 };
 
 export default BookDetails;
+
 
 
 

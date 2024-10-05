@@ -12,14 +12,14 @@ const Title = () => {
         <span className="text-yellow-500 text-5xl md:text-6xl" style={{ fontFamily: 'Great Vibes, cursive' }}> Wormish</span>
       </h1>
       <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto leading-relaxed">
-        “Remember that scene where Mr. Darcy almost confesses his love but then just… walks away awkwardly? 
-        Yeah, if you have no idea what I’m talking about, type ‘Pride and Prejudice’ and hit search. Trust me!”
+        “Why did Jane Austen get kicked out of the library? She kept asking if they had ‘Sense and Sensibility.’ … Oh well, why not try searching for it here instead?
       </p>
     </div>
   );
 };
 
 export default Title;
+
 
 
 

@@ -1,56 +1,84 @@
 // src/components/Header.jsx
 import React, { useState } from 'react';
-import { FaBars } from 'react-icons/fa';
-import { FiSun, FiMoon } from 'react-icons/fi';
-import DropdownMenu from './DropdownMenu';
+import { Link } from 'react-router-dom';
 
 const Header = ({ darkMode, toggleDarkMode }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleHamburgerClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
+  const [menuDropdownVisible, setMenuDropdownVisible] = useState(false);
+  const [signInDropdownVisible, setSignInDropdownVisible] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Left Side: Hamburger Menu and Sign In */}
-        <div className="flex items-center space-x-4">
-          {/* Hamburger Menu */}
-          <div className="relative">
-            <button
-              onClick={handleHamburgerClick}
-              className="text-gray-700 dark:text-gray-200 focus:outline-none"
-              aria-label="Open Menu"
-            >
-              <FaBars size={24} />
-            </button>
-            {/* Dropdown Menu */}
-            {isDropdownOpen && <DropdownMenu closeDropdown={closeDropdown} />}
+    <header className="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-700 shadow-md relative">
+      {/* Menu Dropdown */}
+      <div className="relative">
+        <button
+          className="text-teal-500 text-xl cursor-pointer"
+          onClick={() => setMenuDropdownVisible(!menuDropdownVisible)}
+        >
+          &#9776;
+        </button>
+        {menuDropdownVisible && (
+          <div className="absolute left-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl z-20">
+            <Link to="/category" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+              Categories
+            </Link>
+            <Link to="/reading-list" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+              Reading List
+            </Link>
+            <Link to="/favorites" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+              Favorites
+            </Link>
           </div>
+        )}
+      </div>
 
-          {/* Sign In Button */}
-          <button className="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 transition">
-            Sign In
+      {/* Title & Toggle */}
+      <div className="flex items-center space-x-4">
+        {/* Sign In Dropdown */}
+        <div className="relative">
+          <button
+            className="text-teal-500 underline cursor-pointer"
+            onClick={() => setSignInDropdownVisible(!signInDropdownVisible)}
+          >
+            Sign In / Register
           </button>
+          {signInDropdownVisible && (
+            <div className="absolute right-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl z-20">
+              <Link to="/signin" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                Sign In
+              </Link>
+              <Link to="/register" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                Register
+              </Link>
+            </div>
+          )}
         </div>
 
-        {/* Right Side: Dark Mode Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          className="text-gray-700 dark:text-gray-200 focus:outline-none"
-          aria-label="Toggle Dark Mode"
-        >
-          {darkMode ? <FiSun size={24} /> : <FiMoon size={24} />}
-        </button>
+        {/* Dark Mode Toggle */}
+        <div className="flex items-center space-x-2">
+          <span>{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
+          <label className="flex items-center cursor-pointer">
+            <div className="relative">
+              <input
+                type="checkbox"
+                className="hidden"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+              />
+              <div className="toggle__line w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+              <div
+                className={`toggle__dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition ${
+                  darkMode ? 'transform translate-x-full bg-teal-500' : ''
+                }`}
+              ></div>
+            </div>
+          </label>
+        </div>
       </div>
     </header>
   );
 };
 
 export default Header;
+
+
 

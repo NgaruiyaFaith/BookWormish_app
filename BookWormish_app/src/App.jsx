@@ -1,7 +1,6 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
 import Title from './components/Title';
 import SearchBar from './components/SearchBar';
 import BookList from './components/BookList';
@@ -9,6 +8,7 @@ import BookDetails from './components/BookDetails';
 import Footer from './components/Footer';
 import Pagination from './components/Pagination';
 import debounce from 'lodash.debounce';
+import Header from './components/Header'; // Ensure Header is included for menu and sign-in
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -16,17 +16,21 @@ function App() {
   const [displayBooks, setDisplayBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedBook, setSelectedBook] = useState(null); // State for selected book
+  const [query, setQuery] = useState('');
+  const [selectedBook, setSelectedBook] = useState(null);
   const totalBooksToFetch = 30;
-  const booksPerPage = 12;
+  const booksPerPage = 10;
 
+  // Toggle Dark Mode
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
+  // Apply dark mode class to <html>
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
+  // Debounced search function
   const debouncedSearch = debounce(async (query) => {
     if (!query) return;
     setLoading(true);
@@ -43,14 +47,19 @@ function App() {
     }
   }, 300);
 
+  // Clean up the debounced function on component unmount
   useEffect(() => () => debouncedSearch.cancel(), []);
 
-  const handleSearch = (query) => debouncedSearch(query);
-
-  const handleBookSelect = (book) => {
-    setSelectedBook(book); // Set the selected book when a book is clicked
+  const handleSearch = (query) => {
+    setQuery(query);
+    debouncedSearch(query);
   };
 
+  const handleBookSelect = (book) => {
+    setSelectedBook(book);
+  };
+
+  // Update displayed books when page changes
   useEffect(() => {
     const start = (currentPage - 1) * booksPerPage;
     const end = start + booksPerPage;
@@ -59,35 +68,33 @@ function App() {
 
   return (
     <Router>
-      <div className={`min-h-screen ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} id="root">
+      <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} id="root">
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <div className="content">
-          <main className="pt-24 px-4">
-            <Routes>
-              {/* Home Route */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Title />
-                    <SearchBar onSearch={handleSearch} />
-                    {loading ? <p>Loading...</p> : <BookList books={displayBooks} onBookSelect={handleBookSelect} />}
-                    <Pagination currentPage={currentPage} totalPages={Math.ceil(books.length / booksPerPage)} onPageChange={setCurrentPage} />
-                  </>
-                }
-              />
-              {/* Book Details Route */}
-              <Route path="/book/:id" element={<BookDetails book={selectedBook} />} />
-            </Routes>
-          </main>
+        <div className="container mx-auto px-4 pt-6 flex-1">
+          <Title />
+          <SearchBar onSearch={handleSearch} />
+          {loading && <p>Loading...</p>}
+          {!loading && query && books.length === 0 && (
+            <p className="text-center text-gray-600 dark:text-gray-300">No books found.</p>
+          )}
+          {books.length > 0 && (
+            <>
+              <BookList books={displayBooks} onBookSelect={handleBookSelect} />
+              <Pagination currentPage={currentPage} totalPages={Math.ceil(books.length / booksPerPage)} onPageChange={setCurrentPage} />
+            </>
+          )}
         </div>
-        <Footer />
+        {/* Footer always at the bottom */}
+        <Footer className="mt-auto" />
       </div>
     </Router>
   );
 }
 
 export default App;
+
+
+
 
 
                   

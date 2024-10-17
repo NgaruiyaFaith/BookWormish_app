@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const BookCard = ({ book, onBookSelect }) => {
+const BookCard = ({ book }) => {
   // Use the image URL provided by ISBNdb or a placeholder if not available
   const coverUrl = book.cover_i
     ? book.cover_i
@@ -20,28 +20,17 @@ const BookCard = ({ book, onBookSelect }) => {
 
   return (
     <div
-      className="flex items-start bg-white dark:bg-gray-700 border border-gray-300 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-6 w-full"
       onClick={handleClick}
+      className="flex items-start bg-white dark:bg-gray-700 border border-gray-300 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300 cursor-pointer mb-6 w-full"
     >
       <img
         src={coverUrl}
         alt={book.title || 'No Title Available'}
-        className="w-24 h-36 object-cover rounded-md mr-4"
+        className="w-24 h-36 object-cover rounded-md mr-4 pointer-events-none"
       />
       <div className="flex-1 overflow-hidden">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
-          {/* Use Link to navigate and pass book data */}
-          {book && book.key ? (
-            <Link
-              to={`/book/${book.key.split('/')[2]}`}
-              state={{ book }}
-              className="hover:underline"
-            >
-              {book.title || 'No Title Available'}
-            </Link>
-          ) : (
-            'No Title Available'
-          )}
+          {book.title || 'No Title Available'}
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
           {book.author_name ? book.author_name.join(', ') : 'Unknown Author'}
@@ -58,6 +47,7 @@ const BookCard = ({ book, onBookSelect }) => {
 };
 
 export default BookCard;
+
 
 
 

@@ -16,7 +16,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState('');
-  const [selectedBook, setSelectedBook] = useState(null);
   const totalBooksToFetch = 30;
   const booksPerPage = 10;
   const ISBNDB_API_KEY = '56379_e3dd88f5934eb5a5f1b2eb596d34dbf6'; // Replace with your actual API key
@@ -38,17 +37,14 @@ function App() {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': ISBNDB_API_KEY,
+            'Authorization': '56379_e3dd88f5934eb5a5f1b2eb596d34dbf6',
           },
         }
       );
-  
+
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      
-      // Log the data to inspect the response
-      console.log('API Data:', data);
-  
+
       if (data && data.books) {
         const formattedBooks = data.books.map((item) => ({
           title: item.title ? item.title : 'No Title Available',
@@ -68,17 +64,12 @@ function App() {
       setLoading(false);
     }
   }, 300);
-  
 
   useEffect(() => () => debouncedSearch.cancel(), []);
 
   const handleSearch = (query) => {
     setQuery(query);
     debouncedSearch(query);
-  };
-
-  const handleBookSelect = (book) => {
-    setSelectedBook(book);
   };
 
   // Update displayed books when page changes
@@ -90,25 +81,31 @@ function App() {
 
   return (
     <Router>
-      <div
-        // Changed the background color to soft gray for a cleaner and more contrasting look
-        className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-800 text-white' : 'bg-softGray text-gray-900'}`} 
-        id="root"
-      >
+      <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-800 text-white' : 'bg-softGray text-gray-900'}`} id="root">
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className="container mx-auto px-4 pt-6 flex-1">
-          <Title />
-          <SearchBar onSearch={handleSearch} />
-          {loading && <p>Loading...</p>}
-          {!loading && query && books.length === 0 && (
-            <p className="text-center text-gray-600 dark:text-gray-300">No books found.</p>
-          )}
-          {books.length > 0 && (
-            <>
-              <BookList books={displayBooks} onBookSelect={handleBookSelect} />
-              <Pagination currentPage={currentPage} totalPages={Math.ceil(books.length / booksPerPage)} onPageChange={setCurrentPage} />
-            </>
-          )}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Title />
+                  <SearchBar onSearch={handleSearch} />
+                  {loading && <p>Loading...</p>}
+                  {!loading && query && books.length === 0 && (
+                    <p className="text-center text-gray-600 dark:text-gray-300">No books found.</p>
+                  )}
+                  {books.length > 0 && (
+                    <>
+                      <BookList books={displayBooks} />
+                      <Pagination currentPage={currentPage} totalPages={Math.ceil(books.length / booksPerPage)} onPageChange={setCurrentPage} />
+                    </>
+                  )}
+                </>
+              }
+            />
+            <Route path="/book/:id" element={<BookDetails />} />
+          </Routes>
         </div>
         <Footer className="mt-auto" />
       </div>
@@ -117,6 +114,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

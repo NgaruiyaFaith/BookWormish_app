@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const BookDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { book } = location.state || {};
   const [relatedBooks, setRelatedBooks] = useState([]);
 
   useEffect(() => {
-    // Fetch related books or recommendations
+    // Fetch related books or recommendations if the book data exists
     if (book && book.title) {
-      // Mock API call to get related books (you can replace with a real API call if available)
       const fetchRelatedBooks = async () => {
         try {
           const response = await fetch(
-            `https://api2.isbndb.com/books/${encodeURIComponent(book.title.split(' ')[0])}?page=1&pageSize=5`,
+            `https://api2.isbndb.com/books/${encodeURIComponent(book.title.split(' ')[0])}?page=1&pageSize=6`,
             {
               headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const BookDetails = () => {
             {book.title || 'No Title Available'}
           </h1>
           <h2 className="text-lg text-teal-500 mb-3">
-            {book.author_name ? book.author_name.join(', ') : 'Unknown Author'}
+            {Array.isArray(book.author_name) ? book.author_name.join(', ') : book.author_name || 'Unknown Author'}
           </h2>
 
           <div className="flex items-center mb-3">
@@ -66,22 +66,30 @@ const BookDetails = () => {
             <span className="text-sm text-gray-500">0 comments</span>
           </div>
 
+          {/* Description */}
+          <div className="mb-3">
+            <strong>Description:</strong>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {book.description || 'No description available.'}
+            </p>
+          </div>
+
           {/* Categories */}
           <div className="mb-3">
-            <strong>Categories:</strong> 
+            <strong>Categories:</strong>
             <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
-              {book.categories ? book.categories.join(', ') : 'N/A'}
+              {Array.isArray(book.categories) ? book.categories.join(', ') : book.categories || 'N/A'}
             </span>
           </div>
 
           {/* Additional book details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
             <p><strong>Year:</strong> {book.first_publish_year || 'N/A'}</p>
-            <p><strong>Language:</strong> {book.language ? book.language.join(', ') : 'Unknown'}</p>
-            <p><strong>ISBN 10:</strong> {book.isbn10 ? book.isbn10 : 'N/A'}</p>
-            <p><strong>ISBN 13:</strong> {book.isbn13 ? book.isbn13 : 'N/A'}</p>
+            <p><strong>Language:</strong> {Array.isArray(book.language) ? book.language.join(', ') : book.language || 'Unknown'}</p>
+            <p><strong>ISBN 10:</strong> {book.isbn10 || 'N/A'}</p>
+            <p><strong>ISBN 13:</strong> {book.isbn13 || 'N/A'}</p>
             <p><strong>Pages:</strong> {book.pages || 'N/A'}</p>
-            <p><strong>Publisher:</strong> {book.publisher ? book.publisher.join(', ') : 'Unknown Publisher'}</p>
+            <p><strong>Publisher:</strong> {Array.isArray(book.publisher) ? book.publisher.join(', ') : book.publisher || 'Unknown Publisher'}</p>
           </div>
         </div>
       </div>
@@ -90,19 +98,26 @@ const BookDetails = () => {
       {relatedBooks.length > 0 && (
         <div className="mt-8">
           <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">You may be interested in:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {relatedBooks.map((relatedBook, index) => (
-              <div key={index} className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md">
+              <div
+                key={index}
+                className="bg-white dark:bg-gray-700 p-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-300"
+                onClick={() => navigate(`/book/${relatedBook.isbn13 || relatedBook.isbn}`, {
+                  state: { book: relatedBook },
+                  replace: false, // Ensures it's a fresh navigation
+                })}
+              >
                 <img
                   src={relatedBook.image ? relatedBook.image : 'https://via.placeholder.com/100x150?text=No+Cover'}
                   alt={relatedBook.title || 'No Title Available'}
-                  className="w-32 h-48 object-cover rounded-md mb-2"
+                  className="w-24 h-36 object-cover rounded-md mb-2"
                 />
-                <h4 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                <h4 className="text-md font-semibold text-gray-800 dark:text-gray-200 mb-1 truncate">
                   {relatedBook.title || 'No Title Available'}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {relatedBook.authors ? relatedBook.authors.join(', ') : 'Unknown Author'}
+                  {Array.isArray(relatedBook.authors) ? relatedBook.authors.join(', ') : relatedBook.authors || 'Unknown Author'}
                 </p>
               </div>
             ))}
@@ -114,6 +129,10 @@ const BookDetails = () => {
 };
 
 export default BookDetails;
+
+
+
+
 
 
 

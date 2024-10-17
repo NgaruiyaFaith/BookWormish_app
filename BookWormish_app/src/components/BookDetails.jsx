@@ -66,12 +66,6 @@ const BookDetails = () => {
             {Array.isArray(book.author_name) ? book.author_name.join(', ') : book.author_name || 'Unknown Author'}
           </h2>
 
-          <div className="flex items-center mb-3">
-            {/* Rating */}
-            <span className="text-yellow-500 text-lg font-semibold mr-2">5.0 / 5.0</span>
-            <span className="text-sm text-gray-500">0 comments</span>
-          </div>
-
           {/* Description */}
           <div className="mb-3">
             <strong>Description:</strong>
@@ -80,22 +74,39 @@ const BookDetails = () => {
             </p>
           </div>
 
-          {/* Categories */}
           <div className="mb-3">
-            <strong>Categories:</strong>
+            <strong>Publisher:</strong>
             <span className="text-sm text-gray-600 dark:text-gray-400 ml-2">
-              {Array.isArray(book.categories) ? book.categories.join(', ') : book.categories || 'N/A'}
+              {Array.isArray(book.publisher) ? book.publisher.join(', ') : book.publisher || 'Unknown Publisher'}
             </span>
           </div>
 
-          {/* Additional book details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <p><strong>Year:</strong> {book.first_publish_year || 'N/A'}</p>
-            <p><strong>Language:</strong> {Array.isArray(book.language) ? book.language.join(', ') : book.language || 'Unknown'}</p>
-            <p><strong>ISBN 10:</strong> {book.isbn10 || 'N/A'}</p>
-            <p><strong>ISBN 13:</strong> {book.isbn13 || 'N/A'}</p>
-            <p><strong>Pages:</strong> {book.pages || 'N/A'}</p>
-            <p><strong>Publisher:</strong> {Array.isArray(book.publisher) ? book.publisher.join(', ') : book.publisher || 'Unknown Publisher'}</p>
+          {/* Buttons to add to Reading List and Favorites */}
+          <div className="flex space-x-4 mt-4">
+            <button
+              onClick={() => {
+                const readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+                if (!readingList.some((savedBook) => savedBook.isbn13 === book.isbn13)) {
+                  readingList.push(book);
+                  localStorage.setItem('readingList', JSON.stringify(readingList));
+                }
+              }}
+              className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+            >
+              Add to Reading List
+            </button>
+            <button
+              onClick={() => {
+                const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                if (!favorites.some((savedBook) => savedBook.isbn13 === book.isbn13)) {
+                  favorites.push(book);
+                  localStorage.setItem('favorites', JSON.stringify(favorites));
+                }
+              }}
+              className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+            >
+              Add to Favorites
+            </button>
           </div>
         </div>
       </div>
@@ -135,6 +146,7 @@ const BookDetails = () => {
 };
 
 export default BookDetails;
+
 
 
 

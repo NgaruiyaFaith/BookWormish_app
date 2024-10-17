@@ -23,6 +23,7 @@ const BookDetails = () => {
           );
           if (response.ok) {
             const data = await response.json();
+            console.log('Related Books API Response:', data); // Debug log to inspect related books data
             if (data && data.books) {
               setRelatedBooks(data.books);
             }
@@ -38,6 +39,11 @@ const BookDetails = () => {
   if (!book) {
     return <p className="text-center text-gray-600 dark:text-gray-300">No book details available.</p>;
   }
+
+  useEffect(() => {
+    // Debug log to check the book details
+    console.log('Book Details:', book);
+  }, [book]);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -129,6 +135,69 @@ const BookDetails = () => {
 };
 
 export default BookDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

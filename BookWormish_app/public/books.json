@@ -1,0 +1,21 @@
+{
+    "docs": [
+      {
+        "key": "/works/OL1234567W",
+        "title": "Pride and Prejudice",
+        "author_name": ["Jane Austen"],
+        "publisher": ["Publisher 1"],
+        "first_publish_year": 1813,
+        "cover_i": 8236226
+      },
+      {
+        "key": "/works/OL2345678W",
+        "title": "Moby Dick",
+        "author_name": ["Herman Melville"],
+        "publisher": ["Publisher 2"],
+        "first_publish_year": 1851,
+        "cover_i": 554711
+      }
+    ]
+  }
+  

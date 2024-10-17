@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Title from './components/Title';
@@ -8,7 +7,7 @@ import BookDetails from './components/BookDetails';
 import Footer from './components/Footer';
 import Pagination from './components/Pagination';
 import debounce from 'lodash.debounce';
-import Header from './components/Header'; // Ensure Header is included for menu and sign-in
+import Header from './components/Header';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -20,11 +19,10 @@ function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const totalBooksToFetch = 30;
   const booksPerPage = 10;
+  const ISBNDB_API_KEY = '56379_e3dd88f5934eb5a5f1b2eb596d34dbf6'; // Replace with your actual API key
 
-  // Toggle Dark Mode
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  // Apply dark mode class to <html>
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
@@ -35,19 +33,43 @@ function App() {
     if (!query) return;
     setLoading(true);
     try {
-      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${totalBooksToFetch}`);
+      const response = await fetch(
+        `https://api2.isbndb.com/books/${encodeURIComponent(query)}?page=1&pageSize=${totalBooksToFetch}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': ISBNDB_API_KEY,
+          },
+        }
+      );
+  
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      setBooks(data.docs);
-      setDisplayBooks(data.docs.slice(0, booksPerPage));
+      
+      // Log the data to inspect the response
+      console.log('API Data:', data);
+  
+      if (data && data.books) {
+        const formattedBooks = data.books.map((item) => ({
+          title: item.title ? item.title : 'No Title Available',
+          author_name: item.authors ? item.authors : ['Unknown Author'],
+          first_publish_year: item.date_published ? item.date_published : 'N/A',
+          cover_i: item.image ? item.image : '', // Use the correct cover image from ISBNdb
+          key: item.isbn13 || item.isbn, // Use a unique identifier from ISBNdb
+        }));
+        setBooks(formattedBooks);
+        setDisplayBooks(formattedBooks.slice(0, booksPerPage));
+      } else {
+        console.error('Unexpected response format', data);
+      }
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
       setLoading(false);
     }
   }, 300);
+  
 
-  // Clean up the debounced function on component unmount
   useEffect(() => () => debouncedSearch.cancel(), []);
 
   const handleSearch = (query) => {
@@ -84,7 +106,6 @@ function App() {
             </>
           )}
         </div>
-        {/* Footer always at the bottom */}
         <Footer className="mt-auto" />
       </div>
     </Router>
@@ -92,6 +113,663 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

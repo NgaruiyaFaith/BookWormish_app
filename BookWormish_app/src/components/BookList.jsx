@@ -17,8 +17,9 @@ const BookList = ({ books, onBookSelect }) => {
     return <p className="text-center text-gray-600 dark:text-gray-300">No books found.</p>;
   }
 
+  // Change the container to flex-column layout for list format
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="flex flex-col gap-4">
       {books.map((book, index) => (
         <BookCard key={index} book={book} onBookSelect={handleBookClick} />
       ))}

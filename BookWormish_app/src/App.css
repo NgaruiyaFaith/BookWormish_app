@@ -2,7 +2,7 @@
 html, body {
   height: 100%;  
   margin: 0;     
-  background-color: #f0f4f8; /* Updated: Light blue-gray background */
+  background-color: #bccbec; /* Updated: Light blue-gray background */
 }
 
 #root {
@@ -14,11 +14,14 @@ html, body {
   margin: 0 auto;     
   padding: 0 2rem;    
   text-align: center;
-  background-color: #f0f4f8; /* Match the app background color */
+  background-color:#bccbec;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Match the app background color */
 }
 
 .content {
   flex: 1;
+  margin: 0;
+  background-color: #bccbec;
 }
 
 .card {
@@ -64,4 +67,18 @@ html, body {
 
 .shadow-inner {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.book-card, .content {
+  background-color: #ffffff; /* Light background for cards and content */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+body.dark {
+  background-color: #1a1a1a; /* Dark mode background */
+}
+
+#root.dark {
+  background-color: #262626; /* Dark mode root background */
 }

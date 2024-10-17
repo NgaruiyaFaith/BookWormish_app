@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        cursive: ['Great vibes', 'cursive'],
+        cursive: ['Great Vibes', 'cursive'],
       },
       keyframes: {
         swing: {
@@ -19,10 +19,14 @@ module.exports = {
       animation: {
         swing: 'swing 2s ease-in-out infinite',
       },
+      colors: {
+        softTeal: '#a0d8d3', // Add your desired soft teal color here
+      },
     },
   },
   plugins: [],
 }
+
 
 
 

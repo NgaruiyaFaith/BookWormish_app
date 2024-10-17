@@ -90,7 +90,11 @@ function App() {
 
   return (
     <Router>
-      <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} id="root">
+      <div
+        // Changed the background color to soft gray for a cleaner and more contrasting look
+        className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-800 text-white' : 'bg-softGray text-gray-900'}`} 
+        id="root"
+      >
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className="container mx-auto px-4 pt-6 flex-1">
           <Title />
@@ -113,6 +117,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
